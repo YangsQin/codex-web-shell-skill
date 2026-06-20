@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codex Web</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <header class="sidebar-header">
+          <button id="closeSidebar" class="icon-button hide-desktop" title="收起侧栏" aria-label="收起侧栏">×</button>
+          <div>
+            <strong>Codex Web</strong>
+            <span id="connectionState">Connecting</span>
+          </div>
+          <button id="refreshStatus" class="icon-button" title="刷新状态" aria-label="刷新状态">↻</button>
+        </header>
+
+        <div class="sidebar-scroll">
+        <section class="panel settings-panel">
+          <div class="section-title">API 设置</div>
+          <div id="authPanel" class="auth-panel"></div>
+          <button id="loginButton" class="full-button" type="button">检查登录</button>
+          <label class="field-label">
+            模型
+            <input id="modelInput" value="gpt-5.5" />
+          </label>
+          <label class="field-label">
+            权限
+            <select id="approvalPolicy">
+              <option value="never">Never</option>
+              <option value="on-request">On request</option>
+              <option value="untrusted">Untrusted</option>
+            </select>
+          </label>
+          <label class="field-label">
+            沙箱
+            <select id="sandboxMode">
+              <option value="danger-full-access">Full</option>
+              <option value="workspace-write">Workspace</option>
+              <option value="read-only">Read only</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="panel directory-panel">
+          <div class="section-title">工作目录</div>
+          <div class="path-row">
+            <input id="cwdInput" class="path-input" autocomplete="off" />
+            <button id="openPath" class="small-button">打开</button>
+          </div>
+          <button id="attachDirectory" class="primary full-button">接入此目录</button>
+          <div id="quickPaths" class="quick-paths"></div>
+          <div class="browser-toolbar">
+            <button id="goParent" class="small-button">上级</button>
+            <span id="directoryHint">单击进入，点“接入”打开该目录对话</span>
+          </div>
+          <div id="directoryList" class="directory-list"></div>
+        </section>
+
+        <section class="panel threads-panel">
+          <div class="section-title">当前目录对话</div>
+          <button id="newThread" class="primary full-button">新建对话</button>
+          <div id="threadList" class="thread-list"></div>
+        </section>
+        </div>
+      </aside>
+
+      <main class="chat">
+        <header class="chat-header">
+          <button id="menuToggle" class="icon-button" title="打开侧栏" aria-label="打开侧栏">☰</button>
+          <div class="chat-heading">
+            <h1 id="threadTitle">新建 Codex 对话</h1>
+            <p id="threadMeta" aria-live="polite"></p>
+          </div>
+          <button id="activityToggle" class="activity-button" type="button" title="打开运行反馈" aria-label="打开运行反馈">
+            <span>反馈</span>
+            <strong id="eventCount">0</strong>
+          </button>
+        </header>
+
+        <section id="messages" class="messages">
+          <div class="empty-state">
+            <strong>今天想让 Codex 做什么？</strong>
+            <p>选择工作目录后开始对话。</p>
+          </div>
+        </section>
+
+        <footer class="composer">
+          <div class="composer-box">
+            <textarea id="promptInput" rows="2" placeholder="输入任务，例如：总结这个项目结构"></textarea>
+            <div class="composer-actions">
+              <span id="busyState">Ready</span>
+              <button id="interruptTurn" class="small-button danger" disabled>停止</button>
+              <button id="sendPrompt" class="primary">发送</button>
+            </div>
+          </div>
+        </footer>
+      </main>
+
+      <aside class="activity">
+        <header class="activity-header">
+          <div>
+            <strong>运行反馈</strong>
+            <span>命令、计划、审批</span>
+          </div>
+          <button id="clearEvents" class="icon-button" title="清空反馈" aria-label="清空反馈">清</button>
+          <button id="closeActivity" class="icon-button" title="关闭反馈" aria-label="关闭反馈">×</button>
+        </header>
+        <div id="requestPanel" class="request-panel"></div>
+        <div id="activityStream" class="activity-stream"></div>
+      </aside>
+    </div>
+
+    <dialog id="loginDialog" class="login-dialog">
+      <form method="dialog">
+        <header>
+          <strong>Codex 登录</strong>
+          <button value="close" class="icon-button" aria-label="关闭">×</button>
+        </header>
+        <p>网页外壳使用本机 Codex app-server。要真正发送模型任务，需要 CLI/app-server 有可用认证。</p>
+        <div class="login-actions">
+          <button id="deviceLogin" class="primary" value="stay" type="button">ChatGPT 设备码登录</button>
+          <button id="browserLogin" value="stay" type="button">浏览器登录</button>
+        </div>
+        <label class="api-key-row">
+          API Key
+          <input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" />
+        </label>
+        <button id="apiKeyLogin" value="stay" type="button">使用 API Key 登录</button>
+        <div id="loginResult" class="login-result"></div>
+      </form>
+    </dialog>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
