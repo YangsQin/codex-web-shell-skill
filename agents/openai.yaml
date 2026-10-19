@@ -1,4 +1,0 @@
-interface:
-  display_name: "Codex Web Shell"
-  short_description: "Install and run a local Codex web shell"
-  default_prompt: "Use $codex-web-shell to install or start a LAN-accessible local Codex web shell."
